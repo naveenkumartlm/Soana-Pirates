@@ -1,0 +1,507 @@
+<html>
+<title>Hackathon</title>
+<body>
+<center>
+	<h1>Seed Certificate Agenc</h1>
+<div class="wrapper">
+<table>
+    <tr><td>Lotno</td><td><select id="gparent_select"><option>----</option></select></td>	</tr>
+	<tr><td>CROP</td><td><select id="parent_select"></select></td>	</tr>
+    <tr><td>Variety</td><td><select id="child_select"></select></td>	</tr>
+    <tr><td>Certificate no </td><td><input id="pure" type=text></td></tr> 
+    <tr><td>source Tag </td><td><input id="inert" type=text></td></tr> 
+    <tr><td>certificate_date </td><td><input id="germ" type=text></td></tr>
+    <tr><td>certificate_validity </td><td><input id="geni" type=text></td></tr>
+	<tr><td><button id="view">View Test Report</button></td>
+    <td><button id="donor">Submit</button></td>
+    </tr>
+</table>
+</div>
+</center>
+
+<script language="javascript" type="text/javascript">  
+var li=['PAD2020TN1001','MAI2020TN5000','WHE2020PUN2002','PAD2020TN1002','MAI2020TN5001','WHE2020PUN2003',] ;
+var mList = {
+	PAD2020TN1001: ['-','PADDY'],
+    MAI2020TN5000 :  ['-','MAIZE'],
+    WHE2020PUN2002:['-','WHEAT'],
+    PAD2020TN1002: ['-','PADDY'],
+    MAI2020TN5001 :  ['-','MAIZE'],
+    WHE2020PUN2003:['-','WHEAT']
+};var dList = {
+	PADDY: ['IR20'],
+    MAIZE :  ['FLINT'],
+    WHEAT :  ['WHEAT']
+};
+
+el_gparent = document.getElementById("gparent_select");
+el_parent = document.getElementById("parent_select");
+el_child = document.getElementById("child_select");
+
+for (key in li) {
+	el_gparent.innerHTML = el_gparent.innerHTML + '<option>'+ li[key] +'</option>';
+}
+
+el_gparent.addEventListener('change', function populate_child(e)
+{
+	el_parent.innerHTML='';	
+	el_child.innerHTML = '';
+	itm = e.target.value;
+	if(itm in mList)
+	{
+			for (i = 0; i < mList[itm].length; i++)
+			 {
+				el_parent.innerHTML = el_parent.innerHTML + '<option>'+ mList[itm][i] +'</option>';
+			}
+    }
+   
+});
+
+el_parent.addEventListener('change', function populate_child(e)
+{
+
+	el_child.innerHTML = '';
+	itm = e.target.value;
+	if(itm in dList)
+	{
+			for (i = 0; i < dList[itm].length; i++)
+			 {
+				var no=document.createElement("option");				
+				no.value=dList[itm][i];
+				no.innerHTML=dList[itm][i];
+				el_child.options.add(no);
+
+			}
+	}
+   
+
+    
+});
+</script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script>
+
+
+          
+    if (typeof web3 !== "undefined") 
+         {
+         ethereum.enable();
+         web3 = new Web3(web3.currentProvider);
+         alert("Blockchain network Connected");
+         } 
+         else if (window.web3) {
+ // Use Mist/MetaMask's provider.
+        
+         web3 = window.web3;
+         
+         console.log('Injected web3 detected.');
+         alert("Metamask Connected");
+         }
+         else 
+         {
+         // set the provider you want from Web3.providers
+         web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+         
+         }
+         
+         
+    var address="0xfC14d5123933d6429C9F5ACd26e54C974d4638C5";
+    var abi=[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "crop",
+				"type": "string"
+			},
+			{
+				"name": "variety",
+				"type": "string"
+			},
+			{
+				"name": "source_tag",
+				"type": "string"
+			},
+			{
+				"name": "lot_no",
+				"type": "string"
+			},
+			{
+				"name": "certificate_no",
+				"type": "string"
+			},
+			{
+				"name": "certificate_date",
+				"type": "string"
+			},
+			{
+				"name": "certificate_validity",
+				"type": "string"
+			}
+		],
+		"name": "insert_certificate",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "crop",
+				"type": "string"
+			},
+			{
+				"name": "variety",
+				"type": "string"
+			},
+			{
+				"name": "lot_no",
+				"type": "string"
+			},
+			{
+				"name": "pure_seed",
+				"type": "string"
+			},
+			{
+				"name": "inert_matter",
+				"type": "string"
+			},
+			{
+				"name": "Germination",
+				"type": "string"
+			},
+			{
+				"name": "genetic_purity",
+				"type": "string"
+			},
+			{
+				"name": "test_date",
+				"type": "string"
+			}
+		],
+		"name": "insert_test",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "source_tag",
+				"type": "string"
+			}
+		],
+		"name": "save_testreport",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "source_tag",
+				"type": "string"
+			}
+		],
+		"name": "save_certificate",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "cert",
+		"outputs": [
+			{
+				"name": "crop",
+				"type": "string"
+			},
+			{
+				"name": "variety",
+				"type": "string"
+			},
+			{
+				"name": "source_tag",
+				"type": "string"
+			},
+			{
+				"name": "lot_no",
+				"type": "string"
+			},
+			{
+				"name": "certificate_no",
+				"type": "string"
+			},
+			{
+				"name": "certificate_date",
+				"type": "string"
+			},
+			{
+				"name": "certificate_validity",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "certificateSize",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "source_tag",
+				"type": "string"
+			}
+		],
+		"name": "get_certificate",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "lot_no",
+				"type": "string"
+			}
+		],
+		"name": "get_testreport",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "test",
+		"outputs": [
+			{
+				"name": "crop",
+				"type": "string"
+			},
+			{
+				"name": "variety",
+				"type": "string"
+			},
+			{
+				"name": "lot_no",
+				"type": "string"
+			},
+			{
+				"name": "pure_seed",
+				"type": "string"
+			},
+			{
+				"name": "inert_matter",
+				"type": "string"
+			},
+			{
+				"name": "Germination",
+				"type": "string"
+			},
+			{
+				"name": "genetic_purity",
+				"type": "string"
+			},
+			{
+				"name": "test_date",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "testSize",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+	c=new web3.eth.Contract(abi,address);
+	$("#view").click(function()
+        {
+			alert("loading...");
+	var pure,inert,germ,gene,test_date;
+    pure=$('#pure').val();
+    inert=$('#inert').val();
+    germ=$('#germ').val();
+    gene=$('#geni').val();
+    test_date=$('#test').val();
+    var lotno = document.getElementById("gparent_select").value.toString();
+    var crop = document.getElementById("parent_select").value.toString();
+    var variety = document.getElementById("child_select").value.toString();
+   
+             //alert(date);
+            web3.eth.getAccounts().then(function(accounts) 
+				{
+                    
+					
+                   alert(lotno);
+                    return c.methods.get_testreport(lotno).call({from:accounts[0]}).then(function(result)
+                    {
+			       //alert((result.length));
+            
+                        document.write("<center></div><u ><h2 >Seed Certificate</h2></u></div></center><br>")
+                        document.write("<center></div><u ><h2 >Test Report</h2></u></div></center>")
+                        document.write("<center><table border='1' >"+
+                                        "<tr>"+"<td>"+"CROP"+"</td>"+"<td>"+result[0]+"</td>"+"</tr>"+
+                                        "<tr>"+"<td>"+"VARIETY"+"</td>"+"<td>"+result[1]+"</td>"+"</tr>"+
+                                        "<tr>"+"<td>"+"LOTNO"+"</td>"+"<td>"+result[2]+"</td>"+"</tr>"+
+                                        "<tr>"+"<td>"+"PURE SEED"+"</td>"+"<td>"+result[3]+"</td>"+"</tr>"+
+										"<tr>"+"<td>"+"INERT MATTER"+"</td>"+"<td>"+result[4]+"</td>"+"</tr>"+
+										"<tr>"+"<td>"+"GERMINATION"+"</td>"+"<td>"+result[5]+"</td>"+"</tr>"+
+										"<tr>"+"<td>"+"GENITIC PURITY"+"</td>"+"<td>"+result[6]+"</td>"+"</tr>"+
+										"<tr>"+"<td>"+"TEST DATE"+"</td>"+"<td>"+result[7]+"</td>"+"</tr>"+
+										
+										"</table><br>"
+										+"<a href='hackathon_CERT.html'>"+"BaCK"+"</a>"
+                                         );
+                                         
+                     })
+                     //alert("Exist")
+                })
+            })
+	$("#donor").click(function()
+    {
+   alert("loading....")
+   var certno,tagno,certdate,certval;
+    certno=$('#pure').val();
+    tagno=$('#inert').val();
+    certdate=$('#germ').val();
+    certval=$('#geni').val();
+    test_date=$('#test').val();
+    var lotno = document.getElementById("gparent_select").value.toString();
+    var crop = document.getElementById("parent_select").value.toString();
+    var variety = document.getElementById("child_select").value.toString();
+   
+        web3.eth.getAccounts().then(function(accounts) 
+            {
+                
+              //  alert(accounts[0]);
+              return c.methods.insert_certificate(crop,variety,tagno,lotno,certno,certdate,certval).send({from:accounts[0]});
+                //return c.methods.insertDonors(name,amount,date,donor_Address,mobile).send({from:accounts[0]});
+                
+            }).then(function(result)
+                {
+                    console.log(result);
+
+                    alert("Data updated successfully");
+                }).catch(function(tx)
+            {
+                console.log(tx);
+            })
+    })
+	 </script>
+
+</body>
+</html>
