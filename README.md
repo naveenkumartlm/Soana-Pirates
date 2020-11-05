@@ -1,4 +1,4 @@
-# Soana-Pirates
+# Sona-Pirates
 Seed certification tracking using block chain techniques
 Modules of this project are
   1. Registration Moudles- Users like Seed growers,seed processing plant,Seed processing Agency, field inspector, Tesing Laboratory and Certificate Agency should be register and login to enter their data.Registration and login pages are designed using php and mysql.
